@@ -66,7 +66,7 @@ const LEVEL = {
 options = {
   viewSize: {x: GAME.WIDTH, y: GAME.HEIGHT},
   theme: "crt",
-  isPlayingBgm: true,
+  isPlayingBgm: false,
 };
  
 // ----- Defining objects
