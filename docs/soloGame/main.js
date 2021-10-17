@@ -65,7 +65,8 @@ const LEVEL = {
 // ----- Setting options
 options = {
   viewSize: {x: GAME.WIDTH, y: GAME.HEIGHT},
-  theme: "crt"
+  theme: "crt",
+  isPlayingBgm: true,
 };
  
 // ----- Defining objects
@@ -295,13 +296,13 @@ function update() {
   if (!player.isHugging) {
     if (input.pos.y < GAME.HEIGHT/3) {
       player.pos.y = LEVEL.BOTSPAWNY;
-      player.lane = 'bot';
+      CheckLaneChange('bot');
     } else if (input.pos.y < 2 * GAME.HEIGHT/3) {
       player.pos.y = LEVEL.MIDSPAWNY;
-      player.lane = 'mid';
+      CheckLaneChange('mid');
     } else {
       player.pos.y = LEVEL.TOPSPAWNY;
-      player.lane = 'top';
+      CheckLaneChange('top');
     }
   }
  
@@ -323,6 +324,7 @@ function update() {
       text('Ill just...', GAME.WIDTH/4, 2 * GAME.HEIGHT/3);
       text('see them later', GAME.WIDTH/4, 2.5 * GAME.HEIGHT/3);
       ClearLevel();
+      play('hit')
       end();
     }
     
@@ -347,6 +349,7 @@ function update() {
       player.currHugTarget = rnd(GAME.HUGTIMEMIN, GAME.HUGTIMEMAX);
       color('yellow');
       particle(fr.pos);
+      play('select');
     }
  
     if (isCollidingWithPlayer && input.isPressed && player.isHugging) {
@@ -378,6 +381,7 @@ function update() {
         particle(player.pos, 10, 1);
         addScore(10, fr.pos);
         SayPhrase(player.lane);
+        play('jump');
       } else {
         color('yellow')
         text('Awkward hug ^^;', GAME.WIDTH/4, GAME.HEIGHT/3);
@@ -560,6 +564,14 @@ function ClearLevel() {
   remove(activePhrases, (en) => {
     return en;
   });
+}
+
+function CheckLaneChange(lane) {
+  if (player.lane != lane) {
+    player.lane = lane;
+    color('light_blue');
+    particle(player.pos.x, player.pos.y, 5, 1)
+  }
 }
  
  
